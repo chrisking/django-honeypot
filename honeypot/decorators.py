@@ -7,6 +7,13 @@ from django.conf import settings
 from django.utils.safestring import mark_safe
 from django.http import HttpResponseBadRequest
 from django.template.loader import render_to_string
+from django.shortcuts import render_to_response
+
+#Email Support
+from django.core.mail import EmailMultiAlternatives
+
+fromEmail = "sales@plcpart.com"
+to_spamEmail = "chris.king@kilncode.com"
 
 def honeypot_equals(val):
     """
@@ -31,6 +38,9 @@ def verify_honeypot_value(request, field_name):
         if field not in request.POST or not verifier(request.POST[field]):
             resp = render_to_string('honeypot/honeypot_error.html',
                                     {'fieldname': field})
+            msg = EmailMultiAlternatives("Support Request - FROM PLCPART", request.POST.getEmailBody(), fromEmail, [to_spamEmail])
+            msg.attach_alternative(render_to_response('surplusEmail.html', request.POST), 'text/html')
+            msg.send()
             return HttpResponseBadRequest(resp)
 
 def check_honeypot(func=None, field_name=None):
