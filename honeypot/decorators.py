@@ -14,7 +14,7 @@ from django.core.mail import EmailMultiAlternatives
 from forms import QuoteForm, SellForm, ContactForm
 
 fromEmail = "sales@plcpart.com"
-to_spamEmail = "chris.king@kilncode.com"
+to_spamEmail = "pdfsupplyjunk@gmail.com"
 
 def honeypot_equals(val):
     """
